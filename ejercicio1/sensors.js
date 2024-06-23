@@ -14,11 +14,10 @@ class Sensor {
     this.value = value;
     this.unit = unit;
     this.updated_at = updated_at;
-    this.updateValue = null;
   }
 
-  updateValue(value) {
-    this.value = value;
+  updateValue(newValue) {
+    this.value = newValue;
     this.updated_at = new Date().toISOString();
   }
 }
@@ -47,14 +46,19 @@ class SensorManager {
           break;
         case "humidity": // Rango de 0 a 100%
           newValue = (Math.random() * 100).toFixed(2);
+          sensor.updateValue(newValue);
+          console.log("Humedad actualizada a: ", newValue);
           break;
         case "pressure": // Rango de 960 a 1040 hPa (hectopascales o milibares)
           newValue = (Math.random() * 80 + 960).toFixed(2);
+          sensor.updateValue(newValue);
+          console.log("Presión actualizada a: ", newValue);
           break;
         default: // Valor por defecto si el tipo es desconocido
           newValue = (Math.random() * 100).toFixed(2);
+          sensor.updateValue(newValue);
+          console.log("Valor desconocido actualizado a: ", newValue);
       }
-      sensor.updateValue = newValue;
       this.render();
     } else {
       console.error(`Sensor ID ${id} no encontrado`);
@@ -89,35 +93,35 @@ class SensorManager {
       const sensorCard = document.createElement("div");
       sensorCard.className = "column is-one-third";
       sensorCard.innerHTML = `
-                <div class="card">
-                    <header class="card-header">
-                        <p class="card-header-title">
-                            Sensor ID: ${sensor.id}
-                        </p>
-                    </header>
-                    <div class="card-content">
-                        <div class="content">
-                            <p>
-                                <strong>Tipo:</strong> ${sensor.type}
-                            </p>
-                            <p>
-                               <strong>Valor:</strong> 
-                               ${sensor.value} ${sensor.unit}
-                            </p>
-                        </div>
-                        <time datetime="${sensor.updated_at}">
-                            Última actualización: ${new Date(
-                              sensor.updated_at
-                            ).toLocaleString()}
-                        </time>
-                    </div>
-                    <footer class="card-footer">
-                        <a href="#" class="card-footer-item update-button" data-id="${
-                          sensor.id
-                        }">Actualizar</a>
-                    </footer>
-                </div>
-            `;
+                  <div class="card">
+                      <header class="card-header">
+                          <p class="card-header-title">
+                              Sensor ID: ${sensor.id}
+                          </p>
+                      </header>
+                      <div class="card-content">
+                          <div class="content">
+                              <p>
+                                  <strong>Tipo:</strong> ${sensor.type}
+                              </p>
+                              <p>
+                                 <strong>Valor:</strong> 
+                                 ${sensor.value} ${sensor.unit}
+                              </p>
+                          </div>
+                          <time datetime="${sensor.updated_at}">
+                              Última actualización: ${new Date(
+                                sensor.updated_at
+                              ).toLocaleString()}
+                          </time>
+                      </div>
+                      <footer class="card-footer">
+                          <a href="#" class="card-footer-item update-button" data-id="${
+                            sensor.id
+                          }">Actualizar</a>
+                      </footer>
+                  </div>
+              `;
       container.appendChild(sensorCard);
     });
 
